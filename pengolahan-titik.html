@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pengolahan Titik | Kentang6171</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
+    <link href="css/style.css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="brand">
+          <div class="brand-mark">
+            <img src="assets/logo.png" alt="Logo" />
+          </div>
+          <div>
+            <div class="brand-name">
+              <img src="assets/2.png" alt="Kentang6171" />
+            </div>
+            <div class="brand-sub">
+              Kendali Wilkerstat &amp;<br />Geospasial 6171
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-label">Menu Utama</div>
+
+        <nav class="nav-menu">
+          <a class="nav-link" href="index.html">
+            <i class="bi bi-grid-1x2 nav-icon"></i>
+            <span>Dashboard</span>
+          </a>
+          <a class="nav-link" href="batching.html">
+            <i class="bi bi-box-seam nav-icon"></i>
+            <span>Batching</span>
+          </a>
+          <a class="nav-link" href="pengolahan-peta.html">
+            <i class="bi bi-map nav-icon"></i>
+            <span>Pengolahan Peta</span>
+          </a>
+          <a class="nav-link active" href="pengolahan-titik.html">
+            <i class="bi bi-geo-alt nav-icon"></i>
+            <span>Pengolahan Titik</span>
+          </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+          <img
+            src="assets/logo-bps-kota-pontianak.png"
+            class="sidebar-bps-logo"
+            alt="Logo BPS Kota Pontianak"
+          />
+        </div>
+      </aside>
+
+      <main class="main-area">
+        <header class="topbar">
+          <div class="d-flex align-items-center">
+            <button
+              class="btn btn-light mobile-toggle"
+              onclick="
+                document.getElementById('sidebar').classList.toggle('show')
+              "
+              aria-label="Buka menu"
+            >
+              <i class="bi bi-list"></i>
+            </button>
+
+            <div class="breadcrumb">
+              Kentang6171 <span class="mx-2">/</span>
+              <strong>Pengolahan Titik</strong>
+            </div>
+          </div>
+
+          <div class="user-area">
+            <img
+              src="assets/logo-pj-onta.png"
+              class="user-logo"
+              alt="Logo PJ Onta"
+            />
+          </div>
+        </header>
+
+        <section class="content">
+          <div class="page-heading">
+            <div>
+              <h1>Pengolahan Titik</h1>
+              <p class="page-description">
+                Pemantauan penyelesaian pengolahan titik pada setiap SLS.
+              </p>
+            </div>
+
+            <div class="heading-actions">
+              <button
+                class="btn btn-outline-secondary"
+                onclick="window.location.reload()"
+              >
+                <i class="bi bi-arrow-clockwise me-1"></i> Refresh
+              </button>
+            </div>
+          </div>
+
+          <section class="panel">
+            <div class="toolbar">
+              <div>
+                <div class="toolbar-title">Daftar Pengolahan Titik</div>
+              </div>
+
+              <div class="filters">
+                <input
+                  class="form-control search-box"
+                  type="search"
+                  placeholder="Cari ID atau nama SLS..."
+                  aria-label="Cari data"
+                />
+
+                <select
+                  class="form-select filter-select"
+                  aria-label="Filter kecamatan"
+                >
+                  <option value="">Semua Kecamatan</option>
+                  <option>Pontianak Selatan</option>
+                  <option>Pontianak Tenggara</option>
+                  <option>Pontianak Timur</option>
+                  <option>Pontianak Barat</option>
+                  <option>Pontianak Kota</option>
+                  <option>Pontianak Utara</option>
+                </select>
+
+                <button class="btn btn-primary" type="button">
+                  <i class="bi bi-funnel me-1"></i> Filter
+                </button>
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <table class="table table-hover align-middle batching-table">
+                <thead>
+                  <tr>
+                    <th class="freeze-col freeze-1">
+                      <span>IDSUBSLS</span>
+                    </th>
+                    <th class="freeze-col freeze-2">
+                      <span>Nama SLS</span>
+                    </th>
+                    <th><span>Nama Kecamatan</span></th>
+                    <th><span>Nama Kelurahan</span></th>
+                    <th><span>PPL</span></th>
+                    <th><span>PML</span></th>
+                    <th><span>PJ-Kuda</span></th>
+                    <th><span>Petugas Pengolahan</span></th>
+                    <th><span>Sudah Pengolahan Titik</span></th>
+                    <th><span>Tanggal Pengolahan Titik</span></th>
+                    <th><span>Catatan Pemeriksa</span></th>
+                    <th><span>Aksi</span></th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td class="freeze-col freeze-1">6171010001</td>
+                    <td class="primary-cell freeze-col freeze-2">SLS 001</td>
+                    <td>Pontianak Selatan</td>
+                    <td>Akcaya</td>
+                    <td>PPL 01</td>
+                    <td>PML 01</td>
+                    <td>PJ Kuda 01</td>
+                    <td>Petugas A</td>
+                    <td>
+                      <select class="status-select done">
+                        <option value="Sudah" selected>Sudah</option>
+                        <option value="Belum">Belum</option>
+                      </select>
+                    </td>
+                    <td>06/11/2026</td>
+                    <td>
+                      <input
+                        type="text"
+                        class="note-input"
+                        value="Titik sudah sesuai."
+                        placeholder="Masukkan catatan..."
+                      />
+                    </td>
+                    <td>
+                      <button class="action-btn" type="button">
+                        <i class="bi bi-three-dots"></i>
+                      </button>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td class="freeze-col freeze-1">6171010002</td>
+                    <td class="primary-cell freeze-col freeze-2">SLS 002</td>
+                    <td>Pontianak Selatan</td>
+                    <td>Benua Melayu Darat</td>
+                    <td>PPL 02</td>
+                    <td>PML 02</td>
+                    <td>PJ Kuda 01</td>
+                    <td>Petugas B</td>
+                    <td>
+                      <select class="status-select pending">
+                        <option value="Sudah">Sudah</option>
+                        <option value="Belum" selected>Belum</option>
+                      </select>
+                    </td>
+                    <td>—</td>
+                    <td>
+                      <input
+                        type="text"
+                        class="note-input"
+                        value="Menunggu pengolahan titik."
+                        placeholder="Masukkan catatan..."
+                      />
+                    </td>
+                    <td>
+                      <button class="action-btn" type="button">
+                        <i class="bi bi-three-dots"></i>
+                      </button>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td class="freeze-col freeze-1">6171020001</td>
+                    <td class="primary-cell freeze-col freeze-2">SLS 003</td>
+                    <td>Pontianak Tenggara</td>
+                    <td>Bangka Belitung Laut</td>
+                    <td>PPL 03</td>
+                    <td>PML 03</td>
+                    <td>PJ Kuda 02</td>
+                    <td>Petugas C</td>
+                    <td>
+                      <select class="status-select done">
+                        <option value="Sudah" selected>Sudah</option>
+                        <option value="Belum">Belum</option>
+                      </select>
+                    </td>
+                    <td>07/11/2026</td>
+                    <td>
+                      <input
+                        type="text"
+                        class="note-input"
+                        value="Perlu pengecekan ulang."
+                        placeholder="Masukkan catatan..."
+                      />
+                    </td>
+                    <td>
+                      <button class="action-btn" type="button">
+                        <i class="bi bi-three-dots"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="panel-footer">
+              <nav aria-label="Navigasi halaman">
+                <ul class="pagination">
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#">‹</a>
+                  </li>
+                  <li class="page-item active">
+                    <a class="page-link" href="#">1</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">2</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">3</a>
+                  </li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">›</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </section>
+        </section>
+
+        <footer class="app-footer">
+          <div class="potato-animation" aria-hidden="true">
+            <img class="potato-track" src="assets/animasi-gerak.png" alt="" />
+          </div>
+          <span>Designed for ridhastaman</span>
+        </footer>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    
+    <script src="js/kentang-api.js"></script>
+    <script src="js/data-pages.js"></script>
+  </body>
+</html>

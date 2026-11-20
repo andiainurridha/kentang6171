@@ -1,0 +1,722 @@
+:root {
+  --navy: #f3e8da;
+  --navy-2: #e9d8c4;
+  --blue: #b58a68;
+  --bg: #faf7f2;
+  --text: #49351f;
+  --muted: #8b765f;
+  --line: #e8d8c5;
+}
+
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
+}
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+}
+.sidebar {
+  width: 260px;
+  background: var(--navy);
+  color: #fff;
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 1030;
+  display: flex;
+  flex-direction: column;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 25px 22px 23px;
+  border-bottom: 1px solid var(--line);
+}
+.brand-mark {
+  width: 70px;
+  height: 70px;
+  min-width: 70px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #f3e8da;
+}
+.brand-mark img {
+  width: 70px;
+  height: 70px;
+  max-width: 70px;
+  max-height: 70px;
+  object-fit: contain;
+  display: block;
+}
+.brand-name {
+  font-weight: 750;
+  font-size: 17px;
+  line-height: 1.15;
+  color: #49351f;
+  display: flex;
+  align-items: center;
+}
+.brand-name img {
+  width: 130px;
+  height: 40px;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  margin-left: -5px;
+}
+.brand-sub {
+  font-size: 10px;
+  line-height: 1.35;
+  color: #8b765f;
+  margin-top: 5px;
+}
+.menu-label {
+  padding: 25px 24px 10px;
+  color: #a18468;
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+}
+.nav-menu {
+  padding: 0 13px;
+  display: grid;
+  gap: 6px;
+}
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 12px 14px;
+  color: #765b43;
+  text-decoration: none;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 550;
+  transition: 0.15s;
+}
+.nav-link:hover {
+  background: var(--navy-2);
+  color: #49351f;
+}
+.nav-link.active {
+  background: #b58a68;
+  color: #ffffff;
+  box-shadow: 0 5px 14px rgba(121, 82, 56, 0.12);
+}
+.nav-icon {
+  width: 20px;
+  text-align: center;
+  font-size: 17px;
+}
+.sidebar-bottom {
+  margin-top: auto;
+  padding: 0 15px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  line-height: 1;
+}
+.sidebar-bps-logo {
+  width: 200px;
+  height: 100px;
+  object-fit: contain;
+  object-position: left center;
+  display: block;
+  margin: 0;
+}
+.main-area {
+  margin-left: 260px;
+  width: calc(100% - 260px);
+  min-width: 0;
+}
+.topbar {
+  height: 76px;
+  background: #f3e8da;
+  border-bottom: 1px solid #e8d3b2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+}
+.breadcrumb {
+  font-size: 12px;
+  color: var(--muted);
+}
+.breadcrumb strong {
+  color: var(--text);
+  font-weight: 650;
+}
+.user-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.user-logo {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  display: block;
+}
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #e8d3b2;
+  color: #795238;
+  display: grid;
+  place-items: center;
+  font-weight: 750;
+  font-size: 12px;
+}
+.user-name {
+  font-size: 12px;
+  font-weight: 650;
+}
+.user-role {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.content {
+  padding: 30px 32px 20px;
+  max-width: 1800px;
+  margin: auto;
+}
+.page-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 23px;
+}
+.eyebrow {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--blue);
+  font-weight: 750;
+  margin-bottom: 7px;
+}
+h1 {
+  font-size: 25px;
+  font-weight: 750;
+  letter-spacing: -0.6px;
+  margin: 0;
+}
+.page-description {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 7px 0 0;
+}
+.heading-actions {
+  display: flex;
+  gap: 9px;
+  align-items: center;
+}
+.btn {
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 8px;
+  padding: 9px 13px;
+}
+.btn-primary {
+  background: var(--blue);
+  border-color: var(--blue);
+}
+.btn-outline-secondary {
+  border-color: #dce4ef;
+  color: #526176;
+  background: #fff;
+}
+.panel {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: 0 3px 12px rgba(24, 46, 78, 0.035);
+  overflow: hidden;
+}
+.toolbar {
+  padding: 17px 18px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.toolbar-title {
+  font-size: 13px;
+  font-weight: 700;
+}
+.toolbar-subtitle {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.form-control,
+.form-select {
+  font-size: 11px;
+  border-color: #e1e8f1;
+  border-radius: 8px;
+  min-height: 36px;
+}
+.search-box {
+  width: 230px;
+}
+.filter-select {
+  width: 155px;
+}
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+table {
+  white-space: nowrap;
+  margin: 0 !important;
+}
+.table thead th {
+  background: #f8fafd;
+  color: #68778c;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.45px;
+  font-weight: 750;
+  padding: 13px 13px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+.table tbody td {
+  font-size: 11px;
+  padding: 13px;
+  border-bottom: 1px solid #edf1f6;
+  vertical-align: middle;
+  color: #3b4a60;
+}
+.table tbody tr:hover {
+  background: #fbfcff;
+}
+.table tbody tr:last-child td {
+  border-bottom: 0;
+}
+.table .primary-cell {
+  font-weight: 700;
+  color: #243247;
+}
+.table .secondary-cell {
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 8px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+}
+.status.done {
+  background: #e8f7ef;
+  color: #16834c;
+}
+.status.pending {
+  background: #fff4df;
+  color: #a96a08;
+}
+.status.na {
+  background: #eef2f7;
+  color: #68778c;
+}
+.status-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.note-cell {
+  max-width: 190px;
+  white-space: normal;
+  line-height: 1.45;
+  color: #66758a !important;
+}
+.action-btn {
+  border: 1px solid #e1e8f1;
+  background: #fff;
+  color: #607086;
+  border-radius: 7px;
+  width: 29px;
+  height: 29px;
+  display: inline-grid;
+  place-items: center;
+}
+.panel-footer {
+  padding: 13px 18px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 10px;
+}
+.pagination {
+  margin: 0;
+  gap: 3px;
+}
+.page-link {
+  font-size: 10px;
+  border: 0;
+  border-radius: 6px !important;
+  color: #5e6c80;
+  padding: 6px 9px;
+}
+.page-item.active .page-link {
+  background: var(--blue);
+}
+.app-footer {
+  padding: 17px 32px 25px;
+  color: #9aa6b7;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.potato-animation {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 48px;
+  overflow: hidden;
+  pointer-events: none;
+}
+.potato-track {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 72px;
+  height: 44px;
+  object-fit: contain;
+  animation: potatoWalk 12s linear infinite alternate;
+  will-change: left, transform;
+}
+
+.potato-track {
+  transform: scaleX(1);
+  animation:
+    potatoWalk 12s linear infinite alternate,
+    potatoFlip 24s step-end infinite;
+}
+
+@keyframes potatoFlip {
+  0%,
+  49.99% {
+    transform: scaleX(-1);
+  }
+
+  50%,
+  100% {
+    transform: scaleX(1);
+  }
+}
+.app-footer span {
+  flex-shrink: 0;
+}
+@keyframes potatoWalk {
+  from {
+    left: 0;
+  }
+
+  to {
+    left: calc(100% - 72px);
+  }
+}
+.mobile-toggle {
+  display: none;
+}
+@media (max-width: 991px) {
+  .sidebar {
+    width: 225px;
+  }
+  .main-area {
+    margin-left: 225px;
+    width: calc(100% - 225px);
+  }
+  .content {
+    padding: 24px 20px;
+  }
+  .topbar {
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.2s;
+    width: 260px;
+  }
+
+  .sidebar.show {
+    transform: translateX(0);
+  }
+
+  .main-area {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .topbar {
+    height: 65px;
+    padding: 0 16px;
+  }
+
+  .mobile-toggle {
+    display: inline-flex;
+    margin-right: 10px;
+  }
+
+  .content {
+    padding: 22px 14px;
+  }
+
+  .page-heading {
+    display: block;
+  }
+
+  .heading-actions {
+    margin-top: 15px;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .filter-select {
+    flex: 1;
+    min-width: 120px;
+  }
+
+  .app-footer {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    line-height: 1.8;
+  }
+}
+
+/* ========================================
+   TABEL BATCHING: FREEZE, FILTER, DROPDOWN
+======================================== */
+
+/* Area scroll tabel */
+.table-wrap {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
+  isolation: isolate;
+}
+
+/* Lebar tabel agar bisa digeser horizontal */
+.batching-table {
+  width: max-content !important;
+  min-width: 100%;
+  border-collapse: separate !important;
+  border-spacing: 0;
+  table-layout: auto;
+}
+
+/* Lebar dasar kolom */
+.batching-table th,
+.batching-table td {
+  min-width: 145px;
+  white-space: nowrap;
+}
+
+/* Lebar kolom pertama: IDSUBSLS */
+.batching-table th:nth-child(1),
+.batching-table td:nth-child(1) {
+  width: 130px;
+  min-width: 130px;
+  max-width: 130px;
+}
+
+/* Lebar kolom kedua: Nama SLS */
+.batching-table th:nth-child(2),
+.batching-table td:nth-child(2) {
+  width: 150px;
+  min-width: 150px;
+  max-width: 150px;
+}
+
+/* Freeze kolom pertama dan kedua */
+.batching-table .freeze-col {
+  position: sticky;
+  background: #fff;
+  background-clip: padding-box;
+}
+
+.batching-table .freeze-1 {
+  left: 0;
+  z-index: 3;
+}
+
+.batching-table .freeze-2 {
+  left: 130px;
+  z-index: 3;
+  box-shadow: 4px 0 7px rgba(73, 53, 31, 0.1);
+}
+
+/* Kepala tabel */
+.batching-table thead th {
+  position: sticky;
+  top: 0;
+  vertical-align: top;
+  background: #f8f1e8;
+  color: #795238;
+  min-width: 155px;
+  padding: 13px;
+}
+
+.batching-table thead th.freeze-col {
+  background: #f8f1e8;
+  z-index: 5;
+}
+
+.batching-table thead th.freeze-1,
+.batching-table thead th.freeze-2 {
+  z-index: 6;
+}
+
+/* Judul kolom */
+.batching-table thead th span {
+  display: block;
+  margin-bottom: 9px;
+}
+
+/* Filter pada setiap kolom */
+.batching-table .column-filter {
+  display: block;
+  width: 100%;
+  min-width: 100px;
+  height: 32px;
+  padding: 5px 8px;
+  border: 1px solid #d9c3aa;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #49351f;
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.batching-table .column-filter::placeholder {
+  color: #a18d78;
+}
+
+.batching-table .column-filter:focus {
+  outline: none;
+  border-color: #a87950;
+  box-shadow: 0 0 0 2px rgba(168, 121, 80, 0.15);
+}
+
+.batching-table tbody td.freeze-col {
+  background-color: var(--bs-table-bg);
+  box-shadow: inset 0 0 0 9999px
+    var(--bs-table-bg-state, var(--bs-table-bg-type, transparent));
+}
+
+/* Dropdown status agar terlihat seperti kontrol pilihan */
+.batching-table .status-select {
+  min-width: 112px;
+  height: 34px;
+  padding: 5px 30px 5px 11px;
+  border: 1px solid #d9c3aa;
+  border-radius: 7px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  appearance: auto;
+  -webkit-appearance: auto;
+}
+
+.batching-table .status-select.done {
+  background-color: #e8f7ef !important;
+  color: #16834c !important;
+  border-color: #a9d9bc !important;
+}
+
+.batching-table .status-select.pending {
+  background-color: #fff4df !important;
+  color: #a96a08 !important;
+  border-color: #e8c98e !important;
+}
+
+.batching-table .status-select:focus {
+  outline: none;
+  border-color: #a87950;
+  box-shadow: 0 0 0 2px rgba(168, 121, 80, 0.15);
+}
+/* Baris abu-abu jika kedua proses batching selesai */
+.batching-table tbody tr.row-complete {
+  --bs-table-bg: #f3e4d2;
+  --bs-table-hover-bg: #eeeeee;
+}
+/* ========================================
+   TEXTBOX CATATAN PENGOLAHAN PETA
+======================================== */
+.batching-table .note-input {
+  width: 190px;
+  min-width: 190px;
+  height: 34px;
+  padding: 6px 9px;
+  border: 1px solid #d9c3aa;
+  border-radius: 6px;
+  background: #fff;
+  color: #49351f;
+  font-family: inherit;
+  font-size: 11px;
+}
+
+.batching-table .note-input::placeholder {
+  color: #a18d78;
+}
+
+.batching-table .note-input:focus {
+  outline: none;
+  border-color: #a87950;
+  box-shadow: 0 0 0 2px rgba(168, 121, 80, 0.15);
+}

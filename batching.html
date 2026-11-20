@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Batching | Kentang6171</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
+    <link href="css/style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="brand">
+          <div class="brand-mark">
+            <img src="assets/logo.png" />
+          </div>
+          <div>
+            <div class="brand-name"><img src="assets/2.png" /></div>
+            <div class="brand-sub">
+              Kendali Wilkerstat &amp;<br />Geospasial 6171
+            </div>
+          </div>
+        </div>
+        <div class="menu-label">Menu Utama</div>
+        <nav class="nav-menu">
+          <a class="nav-link" href="index.html"
+            ><i class="bi bi-grid-1x2 nav-icon"></i><span>Dashboard</span></a
+          >
+          <a class="nav-link active" href="batching.html"
+            ><i class="bi bi-box-seam nav-icon"></i><span>Batching</span></a
+          >
+          <a class="nav-link" href="pengolahan-peta.html"
+            ><i class="bi bi-map nav-icon"></i><span>Pengolahan Peta</span></a
+          >
+          <a class="nav-link" href="pengolahan-titik.html"
+            ><i class="bi bi-geo-alt nav-icon"></i
+            ><span>Pengolahan Titik</span></a
+          >
+        </nav>
+        <div class="sidebar-bottom">
+          <img
+            src="assets/logo-bps-kota-pontianak.png"
+            class="sidebar-bps-logo"
+          />
+        </div>
+      </aside>
+      <main class="main-area">
+        <header class="topbar">
+          <div class="d-flex align-items-center">
+            <button
+              class="btn btn-light mobile-toggle"
+              onclick="
+                document.getElementById('sidebar').classList.toggle('show')
+              "
+              aria-label="Buka menu"
+            >
+              <i class="bi bi-list"></i>
+            </button>
+            <div class="breadcrumb">
+              Kentang6171 <span class="mx-2">/</span> <strong>Batching</strong>
+            </div>
+          </div>
+          <div class="user-area">
+            <img src="assets/logo-pj-onta.png" class="user-logo" />
+          </div>
+        </header>
+        <section class="content">
+          <div class="page-heading">
+            <div>
+              <h1>Batching</h1>
+              <p class="page-description">
+                Pemantauan penerimaan peta serta proses scan dan rename SLS.
+              </p>
+            </div>
+            <div class="heading-actions">
+              <button
+                class="btn btn-outline-secondary"
+                onclick="window.location.reload()"
+              >
+                <i class="bi bi-arrow-clockwise me-1"></i> Refresh
+              </button>
+            </div>
+          </div>
+          <section class="panel">
+            <div class="toolbar">
+              <div>
+                <div class="toolbar-title">Daftar Batching</div>
+              </div>
+              <div class="filters">
+                <input
+                  class="form-control search-box"
+                  type="search"
+                  placeholder="Cari ID atau nama SLS..."
+                  aria-label="Cari data"
+                />
+                <select
+                  class="form-select filter-select"
+                  aria-label="Filter kecamatan"
+                >
+                  <option value="">Semua Kecamatan</option>
+                  <option>Pontianak Selatan</option>
+                  <option>Pontianak Tenggara</option>
+                  <option>Pontianak Timur</option>
+                  <option>Pontianak Barat</option>
+                  <option>Pontianak Kota</option>
+                  <option>Pontianak Utara</option>
+                </select>
+                <button class="btn btn-primary">
+                  <i class="bi bi-funnel me-1"></i> Filter
+                </button>
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <table class="table table-hover align-middle batching-table">
+                <thead>
+                  <tr>
+                    <th class="freeze-col freeze-1">
+                      <span>IDSUBSLS</span>
+                      <input
+                        type="text"
+                        class="column-filter"
+                        data-filter-col="0"
+                        placeholder="Filter ID..."
+                      />
+                    </th>
+                    <th class="freeze-col freeze-2">
+                      <span>Nama SLS</span>
+                      <input
+                        type="text"
+                        class="column-filter"
+                        data-filter-col="1"
+                        placeholder="Filter SLS..."
+                      />
+                    </th>
+                    <th>
+                      <span>Nama Kecamatan</span>
+                      <input
+                        type="text"
+                        class="column-filter"
+                        data-filter-col="2"
+                        placeholder="Filter kecamatan..."
+                      />
+                    </th>
+                    <th>
+                      <span>Nama Kelurahan</span>
+                      <input
+                        type="text"
+                        class="column-filter"
+                        data-filter-col="3"
+                        placeholder="Filter kelurahan..."
+                      />
+                    </th>
+                    <th>
+                      <span>PPL</span>
+                      <input
+                        type="text"
+                        class="column-filter"
+                        data-filter-col="4"
+                        placeholder="Filter PPL..."
+                      />
+                    </th>
+                    <th>
+                      <span>PML</span>
+                      <input
+                        type="text"
+                        class="column-filter"
+                        data-filter-col="5"
+                        placeholder="Filter PML..."
+                      />
+                    </th>
+                    <th>
+                      <span>PJ-Kuda</span>
+                      <input
+                        type="text"
+                        class="column-filter"
+                        data-filter-col="6"
+                        placeholder="Filter PJ-Kuda..."
+                      />
+                    </th>
+                    <th>
+                      <span>Sudah Terima Peta</span>
+                      <select class="column-filter" data-filter-col="7">
+                        <option value="">Semua</option>
+                        <option value="Sudah">Sudah</option>
+                        <option value="Belum">Belum</option>
+                      </select>
+                    </th>
+                    <th>
+                      <span>Nama Penerima Peta</span>
+                      <input
+                        type="text"
+                        class="column-filter"
+                        data-filter-col="8"
+                        placeholder="Filter nama..."
+                      />
+                    </th>
+                    <th>
+                      <span>Tanggal Terima</span>
+                      <input
+                        type="text"
+                        class="column-filter"
+                        data-filter-col="9"
+                        placeholder="Filter tanggal..."
+                      />
+                    </th>
+                    <th>
+                      <span>Sudah Scan Rename</span>
+                      <select class="column-filter" data-filter-col="10">
+                        <option value="">Semua</option>
+                        <option value="Sudah">Sudah</option>
+                        <option value="Belum">Belum</option>
+                      </select>
+                    </th>
+                    <th>
+                      <span>Petugas Scan Rename</span>
+                      <input
+                        type="text"
+                        class="column-filter"
+                        data-filter-col="11"
+                        placeholder="Filter petugas..."
+                      />
+                    </th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td class="freeze-col freeze-1">6171010001</td>
+                    <td class="primary-cell freeze-col freeze-2">SLS 001</td>
+                    <td>Pontianak Selatan</td>
+                    <td>Akcaya</td>
+                    <td>Petugas PPL 01</td>
+                    <td>Petugas PML 01</td>
+                    <td>PJ Kuda 01</td>
+                    <td>
+                      <select class="status-select done">
+                        <option value="Sudah" selected>Sudah</option>
+                        <option value="Belum">Belum</option>
+                      </select>
+                    </td>
+                    <td>Petugas A</td>
+                    <td>02/11/2026</td>
+                    <td>
+                      <select class="status-select done">
+                        <option value="Sudah" selected>Sudah</option>
+                        <option value="Belum">Belum</option>
+                      </select>
+                    </td>
+                    <td>Petugas B</td>
+                    <td>
+                      <button class="action-btn">
+                        <i class="bi bi-three-dots"></i>
+                      </button>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td class="freeze-col freeze-1">6171010002</td>
+                    <td class="primary-cell freeze-col freeze-2">SLS 002</td>
+                    <td>Pontianak Selatan</td>
+                    <td>Benua Melayu Darat</td>
+                    <td>Petugas PPL 02</td>
+                    <td>Petugas PML 02</td>
+                    <td>PJ Kuda 01</td>
+                    <td>
+                      <select class="status-select pending">
+                        <option value="Sudah">Sudah</option>
+                        <option value="Belum" selected>Belum</option>
+                      </select>
+                    </td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>
+                      <select class="status-select pending">
+                        <option value="Sudah">Sudah</option>
+                        <option value="Belum" selected>Belum</option>
+                      </select>
+                    </td>
+                    <td>—</td>
+                    <td>
+                      <button class="action-btn">
+                        <i class="bi bi-three-dots"></i>
+                      </button>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td class="freeze-col freeze-1">6171020001</td>
+                    <td class="primary-cell freeze-col freeze-2">SLS 003</td>
+                    <td>Pontianak Tenggara</td>
+                    <td>Bangka Belitung Laut</td>
+                    <td>Petugas PPL 03</td>
+                    <td>Petugas PML 03</td>
+                    <td>PJ Kuda 02</td>
+                    <td>
+                      <select class="status-select done">
+                        <option value="Sudah" selected>Sudah</option>
+                        <option value="Belum">Belum</option>
+                      </select>
+                    </td>
+                    <td>Petugas C</td>
+                    <td>03/11/2026</td>
+                    <td>
+                      <select class="status-select pending">
+                        <option value="Sudah">Sudah</option>
+                        <option value="Belum" selected>Belum</option>
+                      </select>
+                    </td>
+                    <td>—</td>
+                    <td>
+                      <button class="action-btn">
+                        <i class="bi bi-three-dots"></i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="panel-footer">
+              <nav aria-label="Navigasi halaman">
+                <ul class="pagination">
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#">‹</a>
+                  </li>
+                  <li class="page-item active">
+                    <a class="page-link" href="#">1</a>
+                  </li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item"><a class="page-link" href="#">›</a></li>
+                </ul>
+              </nav>
+            </div>
+          </section>
+        </section>
+        <footer class="app-footer">
+          <div class="potato-animation" aria-hidden="true">
+            <img class="potato-track" src="assets/animasi-gerak.png" alt />
+          </div>
+          <span>Designed for ridhastaman</span>
+        </footer>
+      </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    
+
+    
+    <script src="js/kentang-api.js"></script>
+    <script src="js/data-pages.js"></script>
+  </body>
+</html>
