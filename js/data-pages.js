@@ -8,10 +8,10 @@
       columns: [
         ["idsubsls", "text"], ["nmsls", "text"], ["nmkec", "text"], ["nmdesa", "text"],
         ["ppl", "text"], ["pml", "text"], ["pj-kuda", "text"],
-        ["Sudah Terima Peta", "status"], ["Nama Penerima Peta", "text"], ["Tanggal Terima", "text"],
-        ["Sudah Scan Rename", "status"], ["Petugas Scan Rename", "text"]
+        ["Sudah Terima Peta", "status"], ["Nama Penerima Peta", "dropdown"], ["Tanggal Terima", "text"],
+        ["Sudah Scan Rename", "dropdown-status"], ["Petugas Scan Rename", "dropdown"]
       ],
-      editable: { 7: "Sudah Terima Peta", 10: "Sudah Scan Rename" },
+      editable: { 7: "Sudah Terima Peta", 8: "Nama Penerima Peta", 10: "Sudah Scan Rename", 11: "Petugas Scan Rename" },
       complete: function (item) {
         return isDone(item["Sudah Terima Peta"]) && isDone(item["Sudah Scan Rename"]);
       }
@@ -20,12 +20,12 @@
       page: "peta",
       columns: [
         ["idsubsls", "text"], ["nmsls", "text"], ["nmkec", "text"], ["nmdesa", "text"],
-        ["ppl", "text"], ["pml", "text"], ["pj-kuda", "text"], ["Petugas Pengolahan", "text"],
+        ["ppl", "text"], ["pml", "text"], ["pj-kuda", "text"], ["Petugas Pengolahan", "dropdown"],
         ["Sudah Georeferenced", "status"], ["Sudah Upload Hasil Georeferenced", "status"],
         ["Tanggal Georeferenced", "text"], ["Ada Perubahan Batas?", "boundary"],
         ["Catatan Petugas Pengolahan", "note"], ["Catatan Pemeriksa", "note"]
       ],
-      editable: { 8: "Sudah Georeferenced", 9: "Sudah Upload Hasil Georeferenced", 11: "Ada Perubahan Batas?", 12: "Catatan Petugas Pengolahan", 13: "Catatan Pemeriksa" },
+      editable: { 7: "Petugas Pengolahan", 8: "Sudah Georeferenced", 9: "Sudah Upload Hasil Georeferenced", 11: "Ada Perubahan Batas?", 12: "Catatan Petugas Pengolahan", 13: "Catatan Pemeriksa" },
       complete: function (item) {
         return isDone(item["Sudah Georeferenced"]) && isDone(item["Sudah Upload Hasil Georeferenced"]);
       }
@@ -34,10 +34,10 @@
       page: "titik",
       columns: [
         ["idsubsls", "text"], ["nmsls", "text"], ["nmkec", "text"], ["nmdesa", "text"],
-        ["ppl", "text"], ["pml", "text"], ["pj-kuda", "text"], ["Petugas Pengolahan", "text"],
+        ["ppl", "text"], ["pml", "text"], ["pj-kuda", "text"], ["Petugas Pengolahan", "dropdown"],
         ["Sudah Pengolahan Titik", "status"], ["Tanggal Pengolahan Titik", "text"], ["Catatan Pemeriksa", "note"]
       ],
-      editable: { 8: "Sudah Pengolahan Titik", 10: "Catatan Pemeriksa" },
+      editable: { 7: "Petugas Pengolahan", 8: "Sudah Pengolahan Titik", 10: "Catatan Pemeriksa" },
       complete: function (item) { return isDone(item["Sudah Pengolahan Titik"]); }
     }
   };
@@ -51,6 +51,14 @@
   if (!table) return;
   const tbody = table.querySelector("tbody");
   const headers = Array.from(table.querySelectorAll("thead th"));
+  // Tandai kolom catatan secara eksplisit. Baris tabel dibuat ulang oleh
+  // JavaScript saat data Spreadsheet dimuat, jadi styling tidak hanya
+  // bergantung pada markup awal atau urutan nth-child.
+  headers.forEach(function (th, index) {
+    if (config.columns[index] && config.columns[index][1] === "note") {
+      th.classList.add("note-column");
+    }
+  });
   const searchInput = document.querySelector(".search-box");
   const kecamatanFilter = document.querySelector(".filter-select");
   const filterButton = document.querySelector(".filters .btn");
@@ -60,6 +68,7 @@
   let filteredRows = [];
   let currentPage = 1;
   let columnFilters = [];
+  let dropdownOptions = {};
 
   function textValue(value) {
     return value === null || value === undefined ? "" : String(value).trim();
@@ -83,32 +92,55 @@
     const column = config.columns[index];
     if (!column) return "";
     const value = item[column[0]];
-    if (column[1] === "status") return displayStatus(value);
+    if (column[1] === "status" || column[1] === "dropdown-status") return displayStatus(value);
     if (column[1] === "boundary") return displayBoundary(value);
     return textValue(value);
   }
 
   function makeCell(item, index, field, type) {
     const td = document.createElement("td");
+    if (type === "note") td.classList.add("note-cell");
     if (index === 0) td.classList.add("freeze-col", "freeze-1");
     if (index === 1) td.classList.add("primary-cell", "freeze-col", "freeze-2");
 
     const value = item[field];
-    if (type === "status" || type === "boundary") {
+    if (type === "status" || type === "boundary" || type === "dropdown" || type === "dropdown-status") {
       const select = document.createElement("select");
       select.className = "status-select";
-      const options = type === "boundary"
-        ? [["Ada", "Ada"], ["Tidak", "Tidak"]]
-        : [["Sudah", "Sudah"], ["Belum", "Belum"]];
+      let options;
+      if (type === "boundary") {
+        options = ["Ada", "Tidak"];
+      } else if (type === "status" || type === "dropdown-status") {
+        options = dropdownOptions[field] && dropdownOptions[field].length
+          ? dropdownOptions[field]
+          : ["Sudah", "Belum"];
+      } else {
+        options = dropdownOptions[field] || [];
+      }
+
+      const currentValue = type === "boundary"
+        ? displayBoundary(value)
+        : ((type === "status" || type === "dropdown-status") ? displayStatus(value) : textValue(value));
+
+      if (currentValue && !options.includes(currentValue)) options = options.concat([currentValue]);
+      if (type === "dropdown" && !currentValue) {
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.textContent = "Pilih nama...";
+        select.appendChild(placeholder);
+      }
+      if (!options.length) options = [""];
       options.forEach(function (entry) {
         const option = document.createElement("option");
-        option.value = entry[0];
-        option.textContent = entry[1];
+        option.value = entry;
+        option.textContent = entry || "—";
         select.appendChild(option);
       });
-      select.value = type === "boundary" ? displayBoundary(value) : displayStatus(value);
+      select.value = currentValue;
       select.dataset.lastSaved = select.value;
-      if (type === "status") select.classList.add(select.value === "Sudah" ? "done" : "pending");
+      if (type === "status" || type === "dropdown-status") {
+        select.classList.add(select.value === "Sudah" ? "done" : "pending");
+      }
       td.appendChild(select);
     } else if (type === "note") {
       const input = document.createElement("input");
@@ -151,14 +183,25 @@
         }
         control.dataset.lastSaved = control.matches("input")
           ? control.value
-          : (field === "Ada Perubahan Batas?" ? displayBoundary(response.value) : displayStatus(response.value));
+          : (field === "Ada Perubahan Batas?"
+              ? displayBoundary(response.value)
+              : (field === "Sudah Scan Rename" || field === "Sudah Terima Peta"
+                  ? displayStatus(response.value)
+                  : textValue(response.value)));
+        if (control.matches("select") && (field === "Sudah Scan Rename" || field === "Sudah Terima Peta")) {
+          control.classList.toggle("done", control.value === "Sudah");
+          control.classList.toggle("pending", control.value !== "Sudah");
+        }
         control.title = "Perubahan berhasil disimpan ke Google Spreadsheet";
         applyFilters();
       })
       .catch(function (error) {
         control.value = previousValue;
         control.dataset.lastSaved = previousValue;
-        if (control.matches("select") && field !== "Ada Perubahan Batas?") {
+        if (control.matches("select") && (field === "Sudah Terima Peta" ||
+            field === "Sudah Scan Rename" || field === "Sudah Georeferenced" ||
+            field === "Sudah Upload Hasil Georeferenced" ||
+            field === "Sudah Pengolahan Titik")) {
           control.classList.remove("done", "pending");
           control.classList.add(previousValue === "Sudah" ? "done" : "pending");
         }
@@ -182,11 +225,12 @@
           const previous = control.dataset.lastSaved || control.value;
           const current = control.value;
           if (current === previous) return;
-          if (field === "Ada Perubahan Batas?") {
-            control.classList.remove("done", "pending");
-          } else {
+          if (["Sudah Terima Peta", "Sudah Scan Rename", "Sudah Georeferenced",
+              "Sudah Upload Hasil Georeferenced", "Sudah Pengolahan Titik"].includes(field)) {
             control.classList.toggle("done", current === "Sudah");
             control.classList.toggle("pending", current === "Belum");
+          } else {
+            control.classList.remove("done", "pending");
           }
           const apiValue = field === "Ada Perubahan Batas?"
             ? (current === "Ada" ? "YA" : "TIDAK")
@@ -206,7 +250,7 @@
   function setupFilters() {
     columnFilters = [];
     headers.forEach(function (th, index) {
-      if (index === headers.length - 1 || index >= config.columns.length) return;
+      if (index >= config.columns.length) return;
       const oldFilter = th.querySelector(".column-filter");
       const filter = document.createElement("select");
       filter.className = "column-filter";
@@ -286,16 +330,6 @@
       config.columns.forEach(function (column, index) {
         tr.appendChild(makeCell(item, index, column[0], column[1]));
       });
-      const actionCell = document.createElement("td");
-      const actionButton = document.createElement("button");
-      actionButton.className = "action-btn";
-      actionButton.type = "button";
-      actionButton.title = "Aksi";
-      const icon = document.createElement("i");
-      icon.className = "bi bi-three-dots";
-      actionButton.appendChild(icon);
-      actionCell.appendChild(actionButton);
-      tr.appendChild(actionCell);
       updateRowColor(tr, item);
       bindEditableControls(tr, item);
       fragment.appendChild(tr);
@@ -349,6 +383,21 @@
   window.KentangAPI.read(config.page)
     .then(function (response) {
       allRows = response.rows || [];
+      dropdownOptions = response.dropdownOptions || {};
+
+      // Fallback: bila API belum mengirimkan daftar validasi dropdown,
+      // bentuk pilihan dari nama petugas unik yang sudah ada pada data DB.
+      if (config.page === "peta" || config.page === "titik") {
+        const field = "Petugas Pengolahan";
+        const fromRows = allRows
+          .map(function (item) { return textValue(item[field]); })
+          .filter(Boolean);
+        const fromApi = Array.isArray(dropdownOptions[field])
+          ? dropdownOptions[field]
+          : [];
+        dropdownOptions[field] = Array.from(new Set(fromApi.concat(fromRows)));
+      }
+
       setupFilters();
       populateKecamatan();
       applyFilters();

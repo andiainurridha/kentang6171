@@ -15,7 +15,10 @@ const KEY_HEADER = 'idsubsls';
 
 const EDITABLE_FIELDS = {
   'Sudah Terima Peta': 'boolean',
-  'Sudah Scan Rename': 'boolean',
+  'Sudah Scan Rename': 'dropdown',
+  'Nama Penerima Peta': 'dropdown',
+  'Petugas Scan Rename': 'dropdown',
+  'Petugas Pengolahan': 'dropdown',
   'Sudah Georeferenced': 'boolean',
   'Sudah Upload Hasil Georeferenced': 'boolean',
   'Ada Perubahan Batas?': 'boundary',
@@ -139,13 +142,88 @@ function readData_(page) {
     rows.push(item);
   }
 
-  return {
+  const response = {
     success: true,
     page: page,
     headers: selected,
     rows: rows,
     total: rows.length
   };
+
+  if (page === 'batching') {
+    response.dropdownOptions = {
+      'Nama Penerima Peta': getDropdownOptions_(db, index['Nama Penerima Peta'] + 1, lastRow),
+      'Petugas Scan Rename': getDropdownOptions_(db, index['Petugas Scan Rename'] + 1, lastRow),
+      'Sudah Scan Rename': getDropdownOptions_(db, index['Sudah Scan Rename'] + 1, lastRow)
+    };
+  } else if (page === 'peta' || page === 'titik') {
+    const petugasColumn = index['Petugas Pengolahan'];
+    response.dropdownOptions = {
+      'Petugas Pengolahan': petugasColumn === undefined
+        ? []
+        : getDropdownOptions_(db, petugasColumn + 1, lastRow)
+    };
+  }
+
+  return response;
+}
+
+/**
+ * Mengambil pilihan dropdown dari aturan validasi data di Spreadsheet.
+ * Jika kolom tidak memiliki aturan validasi, pilihan diambil dari nilai
+ * unik yang sudah tersedia pada kolom tersebut.
+ */
+function getDropdownOptions_(sheet, column, lastRow) {
+  if (!column) return [];
+  const rowCount = Math.max(lastRow - 1, 1);
+  const range = sheet.getRange(2, column, rowCount, 1);
+  const validations = range.getDataValidations();
+  let rule = null;
+
+  for (let i = 0; i < validations.length; i++) {
+    if (validations[i][0]) {
+      rule = validations[i][0];
+      break;
+    }
+  }
+
+  if (rule) {
+    const criteria = rule.getCriteriaType();
+    const args = rule.getCriteriaValues();
+
+    if (criteria === SpreadsheetApp.DataValidationCriteria.VALUE_IN_LIST) {
+      const listed = (args[0] || []).map(function (value) {
+        return String(value == null ? '' : value).trim();
+      }).filter(Boolean);
+      if (listed.length) return listed;
+    }
+
+    if (criteria === SpreadsheetApp.DataValidationCriteria.VALUE_IN_RANGE) {
+      const listed = args[0].getDisplayValues().flat()
+        .map(function (value) { return String(value || '').trim(); })
+        .filter(Boolean)
+        .filter(function (value, index, values) { return values.indexOf(value) === index; });
+      if (listed.length) return listed;
+    }
+
+    if (criteria === SpreadsheetApp.DataValidationCriteria.CHECKBOX) {
+      return ['Sudah', 'Belum'];
+    }
+  }
+
+  const values = range.getDisplayValues().flat()
+    .map(function (value) { return String(value || '').trim(); })
+    .filter(Boolean);
+  const unique = values.filter(function (value, index) {
+    return values.indexOf(value) === index;
+  }).sort();
+
+  if (unique.length && unique.every(function (value) {
+    return ['TRUE', 'FALSE', '1', '0'].includes(value.toUpperCase());
+  })) {
+    return ['Sudah', 'Belum'];
+  }
+  return unique;
 }
 
 function readMonitoring_(ss) {
@@ -184,6 +262,9 @@ function updateData_(params) {
     if (['true', 'sudah', '1'].includes(normalized)) value = true;
     else if (['false', 'belum', '0'].includes(normalized)) value = false;
     else throw new Error('Nilai status harus Sudah atau Belum.');
+  } else if (type === 'dropdown') {
+    value = String(value == null ? '' : value).trim();
+    if (value.length > 200) throw new Error('Nilai dropdown terlalu panjang.');
   } else if (type === 'boundary') {
     const normalized = String(value).trim().toUpperCase();
     if (['ADA', 'YA'].includes(normalized)) value = 'YA';
@@ -224,6 +305,32 @@ function updateData_(params) {
     if (!finder) throw new Error('ID SLS tidak ditemukan: ' + id);
 
     const targetRow = finder.getRow();
+
+    if (type === 'dropdown') {
+      const targetCell = sheet.getRange(targetRow, targetCol);
+      const rule = targetCell.getDataValidation();
+      if (rule) {
+        const criteria = rule.getCriteriaType();
+        const args = rule.getCriteriaValues();
+
+        if (criteria === SpreadsheetApp.DataValidationCriteria.CHECKBOX) {
+          const normalized = String(value).toLowerCase();
+          if (['sudah', 'true', '1'].includes(normalized)) {
+            value = args.length > 0 ? args[0] : true;
+          } else if (['belum', 'false', '0'].includes(normalized)) {
+            value = args.length > 1 ? args[1] : false;
+          } else {
+            throw new Error('Pilih status Sudah atau Belum.');
+          }
+        } else {
+          const allowed = getDropdownOptions_(sheet, targetCol, lastRow);
+          if (allowed.length && allowed.indexOf(String(value)) === -1) {
+            throw new Error('Pilihan tidak sesuai dengan dropdown pada Spreadsheet.');
+          }
+        }
+      }
+    }
+
     sheet.getRange(targetRow, targetCol).setValue(value);
     SpreadsheetApp.flush();
 

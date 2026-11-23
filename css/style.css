@@ -566,17 +566,36 @@ table {
 /* Lebar kolom pertama: IDSUBSLS */
 .batching-table th:nth-child(1),
 .batching-table td:nth-child(1) {
-  width: 130px;
-  min-width: 130px;
-  max-width: 130px;
-}
-
-/* Lebar kolom kedua: Nama SLS */
-.batching-table th:nth-child(2),
-.batching-table td:nth-child(2) {
   width: 150px;
   min-width: 150px;
   max-width: 150px;
+}
+
+/* Lebar kolom kedua: Nama SLS agar nama panjang tetap terbaca */
+.batching-table th:nth-child(2),
+.batching-table td:nth-child(2) {
+  width: 280px;
+  min-width: 280px;
+  max-width: 280px;
+}
+
+/* Kolom catatan dibuat tetap proporsional dengan textbox.
+   Peta: kolom 13-14. Titik: kolom 11. */
+.page-peta .batching-table th:nth-child(13),
+.page-peta .batching-table td:nth-child(13),
+.page-peta .batching-table th:nth-child(14),
+.page-peta .batching-table td:nth-child(14),
+.page-titik .batching-table th:nth-child(11),
+.page-titik .batching-table td:nth-child(11) {
+  width: 175px;
+  min-width: 175px;
+  max-width: 175px;
+}
+
+.page-peta .batching-table th:nth-child(13),
+.page-peta .batching-table th:nth-child(14),
+.page-titik .batching-table th:nth-child(11) {
+  white-space: normal;
 }
 
 /* Freeze kolom pertama dan kedua */
@@ -592,7 +611,7 @@ table {
 }
 
 .batching-table .freeze-2 {
-  left: 130px;
+  left: 150px;
   z-index: 3;
   box-shadow: 4px 0 7px rgba(73, 53, 31, 0.1);
 }
@@ -699,16 +718,18 @@ table {
    TEXTBOX CATATAN PENGOLAHAN PETA
 ======================================== */
 .batching-table .note-input {
-  width: 190px;
-  min-width: 190px;
-  height: 34px;
-  padding: 6px 9px;
+  width: 150px;
+  min-width: 150px;
+  max-width: 150px;
+  height: 32px;
+  padding: 5px 7px;
   border: 1px solid #d9c3aa;
   border-radius: 6px;
   background: #fff;
   color: #49351f;
   font-family: inherit;
-  font-size: 11px;
+  font-size: 10px;
+  box-sizing: border-box;
 }
 
 .batching-table .note-input::placeholder {
@@ -719,4 +740,35 @@ table {
   outline: none;
   border-color: #a87950;
   box-shadow: 0 0 0 2px rgba(168, 121, 80, 0.15);
+}
+
+
+/* =====================================================
+   FIX FINAL KOLOM CATATAN (PETA DAN TITIK)
+   Sel tabel dibuat ulang oleh js/data-pages.js.
+   Kelas khusus menjaga lebar tetap sama setelah render data.
+===================================================== */
+.batching-table thead th.note-column,
+.batching-table tbody td.note-cell {
+  width: 175px !important;
+  min-width: 175px !important;
+  max-width: 175px !important;
+  box-sizing: border-box !important;
+}
+
+.batching-table thead th.note-column {
+  white-space: normal !important;
+}
+
+.batching-table tbody td.note-cell {
+  overflow: hidden !important;
+}
+
+.batching-table tbody td.note-cell > .note-input {
+  display: block !important;
+  width: 150px !important;
+  min-width: 150px !important;
+  max-width: 150px !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
 }
