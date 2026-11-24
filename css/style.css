@@ -385,6 +385,33 @@ table {
   color: var(--muted);
   font-size: 10px;
 }
+.rows-per-page-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+}
+.rows-per-page-label {
+  color: var(--muted);
+  font-size: 10px;
+  white-space: nowrap;
+  margin: 0;
+}
+.rows-per-page-select {
+  width: 76px;
+  min-height: 30px;
+  padding: 4px 25px 4px 8px;
+  border-color: var(--line);
+  color: var(--text);
+  font-size: 11px;
+  border-radius: 6px;
+}
+.rows-per-page-info {
+  color: var(--muted);
+  font-size: 10px;
+  white-space: nowrap;
+}
 .pagination {
   margin: 0;
   gap: 3px;
@@ -771,4 +798,15 @@ table {
   max-width: 150px !important;
   box-sizing: border-box !important;
   margin: 0 !important;
+}\n\n@media (max-width: 767.98px) {
+  .panel-footer {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+  .rows-per-page-controls {
+    width: 100%;
+  }
+  .panel-footer nav {
+    margin-left: auto;
+  }
 }

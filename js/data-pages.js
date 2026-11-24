@@ -42,7 +42,7 @@
     }
   };
 
-  const PAGE_SIZE = 50;
+  let pageSize = 50;
   const fileName = location.pathname.split("/").pop() || "index.html";
   const config = PAGE_CONFIG[fileName];
   if (!config) return;
@@ -63,6 +63,51 @@
   const kecamatanFilter = document.querySelector(".filter-select");
   const filterButton = document.querySelector(".filters .btn");
   const pagination = document.querySelector(".panel-footer .pagination");
+  const panelFooter = document.querySelector(".panel-footer");
+  let pageInfo = null;
+  let pageSizeSelect = null;
+
+  // Kontrol jumlah baris per halaman. Nilai awal 50 mempertahankan
+  // perilaku pagination yang sudah digunakan sebelumnya.
+  if (panelFooter) {
+    const controls = document.createElement("div");
+    controls.className = "rows-per-page-controls";
+
+    const label = document.createElement("label");
+    label.className = "rows-per-page-label";
+    label.textContent = "Baris per halaman";
+    label.setAttribute("for", "rowsPerPage");
+
+    pageSizeSelect = document.createElement("select");
+    pageSizeSelect.id = "rowsPerPage";
+    pageSizeSelect.className = "form-select form-select-sm rows-per-page-select";
+    pageSizeSelect.setAttribute("aria-label", "Jumlah baris per halaman");
+
+    [10, 25, 50, 100].forEach(function (size) {
+      const option = document.createElement("option");
+      option.value = String(size);
+      option.textContent = String(size);
+      pageSizeSelect.appendChild(option);
+    });
+    pageSizeSelect.value = String(pageSize);
+
+    pageInfo = document.createElement("span");
+    pageInfo.className = "rows-per-page-info";
+    pageInfo.setAttribute("aria-live", "polite");
+
+    controls.appendChild(label);
+    controls.appendChild(pageSizeSelect);
+    controls.appendChild(pageInfo);
+    panelFooter.insertBefore(controls, panelFooter.firstChild);
+
+    pageSizeSelect.addEventListener("change", function () {
+      const selectedSize = Number(pageSizeSelect.value);
+      if (!Number.isFinite(selectedSize) || selectedSize < 1) return;
+      pageSize = selectedSize;
+      currentPage = 1;
+      renderPage();
+    });
+  }
 
   let allRows = [];
   let filteredRows = [];
@@ -317,10 +362,10 @@
   }
 
   function renderPage() {
-    const pageCount = Math.max(1, Math.ceil(filteredRows.length / PAGE_SIZE));
+    const pageCount = Math.max(1, Math.ceil(filteredRows.length / pageSize));
     currentPage = Math.min(Math.max(currentPage, 1), pageCount);
-    const start = (currentPage - 1) * PAGE_SIZE;
-    const pageRows = filteredRows.slice(start, start + PAGE_SIZE);
+    const start = (currentPage - 1) * pageSize;
+    const pageRows = filteredRows.slice(start, start + pageSize);
     const fragment = document.createDocumentFragment();
     tbody.innerHTML = "";
 
@@ -345,6 +390,13 @@
       fragment.appendChild(tr);
     }
     tbody.appendChild(fragment);
+
+    if (pageInfo) {
+      const end = Math.min(start + pageRows.length, filteredRows.length);
+      pageInfo.textContent = filteredRows.length
+        ? "Menampilkan " + (start + 1) + "–" + end + " dari " + filteredRows.length + " data"
+        : "Menampilkan 0 data";
+    }
 
     if (!pagination) return;
     pagination.innerHTML = "";
